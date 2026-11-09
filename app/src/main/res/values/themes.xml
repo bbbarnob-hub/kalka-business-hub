@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Kalka" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">#08090B</item>
+        <item name="android:statusBarColor">#101317</item>
+        <item name="android:navigationBarColor">#0B0D10</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
