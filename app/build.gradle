@@ -36,9 +36,23 @@ android {
     }
 }
 
+chaquopy {
+    defaultConfig {
+        version "3.10"
+        pip {
+            install "flask==3.0.3"
+            install "werkzeug==3.0.3"
+            install "jinja2==3.1.4"
+            install "markupsafe==2.1.5"
+            install "itsdangerous==2.2.0"
+            install "click==8.1.7"
+            install "blinker==1.8.2"
+        }
+    }
+}
+
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.webkit:webkit:1.11.0'
     implementation 'androidx.biometric:biometric:1.1.0'
-    implementation 'com.chaquo.python:gradle:15.0.1'
 }
