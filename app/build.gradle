@@ -51,7 +51,17 @@ chaquopy {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        // androidx.biometric pulls old kotlin-stdlib-jdk7/jdk8 which clash with kotlin-stdlib
+        force 'org.jetbrains.kotlin:kotlin-stdlib:1.9.24'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.24'
+    }
+}
+
 dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.24'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.webkit:webkit:1.11.0'
     implementation 'androidx.biometric:biometric:1.1.0'
