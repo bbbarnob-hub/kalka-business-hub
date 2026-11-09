@@ -6,7 +6,10 @@
 'use strict';
 
 const API = {
-  base: '',
+  // inside the Android app the Python backend listens on the loopback port
+  base: (window.KalkaNative && window.KalkaNative.backendPort)
+    ? 'http://127.0.0.1:' + window.KalkaNative.backendPort()
+    : '',
   token: localStorage.getItem('kbh.token') || '',
   grant: '',
   grantUntil: 0,

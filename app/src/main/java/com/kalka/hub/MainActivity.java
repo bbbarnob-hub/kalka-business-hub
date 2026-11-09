@@ -86,11 +86,40 @@ public class MainActivity extends AppCompatActivity {
         });
 
         webView.addJavascriptInterface(new Bridge(), "KalkaNative");
-        webView.loadUrl("https://appassets.androidplatform.net/assets/www/index.html");
+        // the UI is only loaded once the on-device backend answers, so the first
+        // screen never shows a "cannot reach server" error
+        waitForBackendThenLoad();
 
         executor = ContextCompat.getMainExecutor(this);
         buildBiometricPrompt();
         askNotificationPermission();
+    }
+
+    private void waitForBackendThenLoad() {
+        final String url = "https://appassets.androidplatform.net/assets/www/index.html";
+        new Thread(() -> {
+            boolean up = false;
+            for (int i = 0; i < 60; i++) {
+                try {
+                    java.net.HttpURLConnection c = (java.net.HttpURLConnection)
+                            new java.net.URL("http://127.0.0.1:" + PORT + "/api/health").openConnection();
+                    c.setConnectTimeout(700);
+                    c.setReadTimeout(700);
+                    if (c.getResponseCode() == 200) { up = true; c.disconnect(); break; }
+                    c.disconnect();
+                } catch (Exception ignored) { }
+                try { Thread.sleep(400); } catch (InterruptedException e) { break; }
+            }
+            final boolean ready = up;
+            runOnUiThread(() -> {
+                webView.loadUrl(url);
+                if (!ready) {
+                    Toast.makeText(MainActivity.this,
+                            "The app server is still starting — if the screen is blank, close and reopen the app.",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }).start();
     }
 
     /** Boot the on-device Python backend in the background. */
